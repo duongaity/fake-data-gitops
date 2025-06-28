@@ -2,5 +2,5 @@ apiVersion: v2
 name: fake-data-rest-api
 description: Helm chart for Spring REST API in nonprod environment
 type: application
-version: 0.2.1
+version: 0.2.8
 appVersion: "1.0.0"
