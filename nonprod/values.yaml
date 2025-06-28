@@ -3,7 +3,7 @@ namespace: argocd
 replicas: 1
 image:
   repository: 674059452637.dkr.ecr.us-east-1.amazonaws.com/fake-data
-  tag: "setup_github_actions_15941804215"
+  tag: "setup_github_actions_15942174811"
 containerPort: 8080
 springProfile: nonprod
 service:
