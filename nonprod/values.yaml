@@ -3,7 +3,7 @@ namespace: default
 replicas: 1
 image:
   repository: 674059452637.dkr.ecr.us-east-1.amazonaws.com/nonprod-fake-data
-  tag: "latest"
+  tag: "setup_github_actions_15941804215"
 containerPort: 8080
 springProfile: nonprod
 service:
