@@ -1,4 +1,4 @@
-# GitOps triển khai với ArgoCD + Helm
+# GitOps triển khai với ArgoCD + Helm - Kiến Không Ngủ
 
 Đây là repository triển khai ứng dụng theo mô hình **GitOps**, sử dụng [**ArgoCD**](https://argo-cd.readthedocs.io/en/stable/) để đồng bộ cấu hình từ Git lên Kubernetes. Ứng dụng được đóng gói và quản lý thông qua [**Helm**](https://helm.sh/).
 
