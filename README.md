@@ -52,7 +52,6 @@
 - **Cấu hình**: Các rule như `host: myapp.example.com`, `path: /api`,…
 - **Tùy chọn**: Có thể thêm annotation để dùng ingress controller như NGINX hoặc AWS ALB Ingress Controller.
 
-
 ## 2. GitOps triển khai với ArgoCD + Helm
 
 ### Cách 1: Port-forward (Kiểm tra nhanh từ local)
@@ -62,7 +61,7 @@ Với **type: ClusterIP**: Chỉ cho phép truy cập bên trong cụm (từ cá
 ```bash
 kubectl port-forward svc/fake-data-rest-api -n argocd 8080:80
 ```
-Ca
+
 Giải thích:
 - Lệnh này ánh xạ port 8080 trên máy local tới port 80 của Service fake-data-rest-api trong namespace abc.
 - Service sẽ chuyển tiếp yêu cầu tới port 8080 của container.
