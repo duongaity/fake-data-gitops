@@ -3,7 +3,7 @@ namespace: default
 replicas: 1
 image:
   repository: 674059452637.dkr.ecr.us-east-1.amazonaws.com/prod-fake-data
-  tag: "main_15942695282"
+  tag: "main_15968709550"
 containerPort: 8080
 springProfile: prod
 service:
