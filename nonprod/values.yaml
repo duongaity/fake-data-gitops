@@ -1,14 +1,19 @@
 appName: fake-data-rest-api
 namespace: argocd
-replicas: 1
+replicaCount: 1
 image:
   repository: 674059452637.dkr.ecr.us-east-1.amazonaws.com/fake-data
   tag: "setup_github_actions_15942648015"
+  pullPolicy: IfNotPresent
 containerPort: 8080
 springProfile: nonprod
-service:
-  type: LoadBalancer # LoadBalancer hoặc ClusterIP
-  port: 80
+serviceAccount:
+  name: fake-data-sa
+awsAccountId: "674059452637"
+environment: nonprod
+awsRegion: us-east-1
+s3BucketName: fake-data-s3bucket
+dynamodbTableName: fake-data-dynamodbtable
 resources:
   limits:
     cpu: "500m"
@@ -16,3 +21,18 @@ resources:
   requests:
     cpu: "200m"
     memory: "256Mi"
+livenessProbe:
+  path: /actuator/health/liveness
+  initialDelaySeconds: 30
+  periodSeconds: 10
+  timeoutSeconds: 5
+  failureThreshold: 3
+readinessProbe:
+  path: /actuator/health/readiness
+  initialDelaySeconds: 10
+  periodSeconds: 5
+  timeoutSeconds: 5
+  failureThreshold: 3
+service:
+  type: LoadBalancer
+  port: 80

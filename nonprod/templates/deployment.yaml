@@ -6,7 +6,7 @@ metadata:
   labels:
     app: {{ .Values.appName }}
 spec:
-  replicas: {{ .Values.replicas }}
+  replicas: {{ .Values.replicaCount | default 2 }}
   selector:
     matchLabels:
       app: {{ .Values.appName }}
@@ -15,30 +15,42 @@ spec:
       labels:
         app: {{ .Values.appName }}
     spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
       containers:
       - name: {{ .Values.appName }}
-        image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        image: {{ .Values.image.repository }}:{{ .Values.image.tag | default "latest" }}
+        imagePullPolicy: {{ .Values.image.pullPolicy | default "IfNotPresent" }}
         ports:
-        - containerPort: {{ .Values.containerPort }}
+        - containerPort: {{ .Values.containerPort | default 8080 }}
         env:
         - name: SPRING_PROFILES_ACTIVE
-          value: {{ .Values.springProfile }}
+          value: {{ .Values.springProfile | default "prod" }}
+        - name: AWS_REGION
+          value: {{ .Values.awsRegion }}
+        - name: cloud.aws.s3.bucket
+          value: {{ .Values.s3BucketName }}
+        - name: cloud.aws.dynamodb.table
+          value: {{ .Values.dynamodbTableName }}
         resources:
           limits:
-            cpu: {{ .Values.resources.limits.cpu }}
-            memory: {{ .Values.resources.limits.memory }}
+            cpu: {{ .Values.resources.limits.cpu | default "500m" }}
+            memory: {{ .Values.resources.limits.memory | default "512Mi" }}
           requests:
-            cpu: {{ .Values.resources.requests.cpu }}
-            memory: {{ .Values.resources.requests.memory }}
+            cpu: {{ .Values.resources.requests.cpu | default "200m" }}
+            memory: {{ .Values.resources.requests.memory | default "256Mi" }}
         livenessProbe:
           httpGet:
-            path: /actuator/health/liveness
-            port: {{ .Values.containerPort }}
-          initialDelaySeconds: 30
-          periodSeconds: 10
+            path: {{ .Values.livenessProbe.path | default "/actuator/health/liveness" }}
+            port: {{ .Values.containerPort | default 8080 }}
+          initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds | default 30 }}
+          periodSeconds: {{ .Values.livenessProbe.periodSeconds | default 10 }}
+          timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds | default 5 }}
+          failureThreshold: {{ .Values.livenessProbe.failureThreshold | default 3 }}
         readinessProbe:
           httpGet:
-            path: /actuator/health/readiness
-            port: {{ .Values.containerPort }}
-          initialDelaySeconds: 10
-          periodSeconds: 5
+            path: {{ .Values.readinessProbe.path | default "/actuator/health/readiness" }}
+            port: {{ .Values.containerPort | default 8080 }}
+          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds | default 10 }}
+          periodSeconds: {{ .Values.readinessProbe.periodSeconds | default 5 }}
+          timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds | default 5 }}
+          failureThreshold: {{ .Values.readinessProbe.failureThreshold | default 3 }}
